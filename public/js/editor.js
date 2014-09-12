@@ -44,4 +44,6 @@ function AposPreferences() {
   }
 }
 
-window.aposPreferences = new AposPreferences();
+$( function() {
+  window.aposPreferences = new AposPreferences();
+});
