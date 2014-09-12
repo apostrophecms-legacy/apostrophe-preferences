@@ -1,0 +1,26 @@
+{%- extends 'baseModal.html' -%}
+
+{% include 'schemas:schemaMacros.html' %}
+{% include 'uiMacros.html' %}
+
+{%- block modalClass -%}
+  apos-preferences-modal apos-ui-modal-has-tabs apos-ui-modal-no-sidebar
+{%- endblock -%}
+
+{%- block modalControls -%}
+  <div class="apos-modal-controls">
+    {{ renderProgressBtn({ dataAttrs: 'data-save', float: 'right', color: 'base', label: __('Save') }) }}
+  </div>
+{%- endblock -%}
+
+{%- block modalLabel -%}
+  {{ __('Site Preferences') }}
+{%- endblock -%}
+
+{%- block modalBody -%}
+  <div class="apos-modal-body">
+    <form>
+      {{ schemaFields(fields) }}
+    </form>
+  </div>
+{%- endblock -%}
