@@ -3,23 +3,28 @@ function AposPreferences() {
   self.schema = apos.data.aposPreferences.schema;
 
   $('[data-apos-preferences-menu]').click( function() {
-    // get the preferences
-    var $el = apos.modalFromTemplate('.apos-template.apos-preferences-modal', {});
 
-    loadPreferences($el, function() {
-      $el.find('[data-save]').on('click', function(e) {
-        $(this).addClass('apos-busy');
-        var data = {};
-        savePreferences($el);
-      });
+    // get the preferences
+    var $el = apos.modalFromTemplate('.apos-template.apos-preferences-modal', { 
+      init: function(callback) { 
+
+        $.getJSON('/apos-preferences', function(data) {
+          aposSchemas.populateFields($el, self.schema, data, function(){
+
+            // set the save button listener
+            $el.find('[data-save]').on('click', function(e) {
+              $(this).addClass('apos-busy');
+              var data = {};
+              savePreferences($el);
+            });
+
+            return callback();
+          });
+        });
+
+      }
     });
   });
-
-  function loadPreferences($el, cb) {
-    $.getJSON('/apos-preferences', function(data) {
-      aposSchemas.populateFields($el, self.schema, data, cb);
-    });
-  }
 
   function savePreferences($el) {
     var data= {};
