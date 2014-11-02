@@ -24,3 +24,5 @@ In `outerLayout.html` where your Apostrophe site-wide menu is defined:
 ```twig
 {{ aposPreferencesMenu(permissions) }}
 ```
+
+In tempaltes, your site preferences are now available in the `preferences` variable.
