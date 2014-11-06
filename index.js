@@ -1,3 +1,5 @@
+/* jshint node:true */
+
 var _ = require('lodash');
 
 module.exports = aposPreferences;
@@ -29,9 +31,12 @@ aposPreferences.Construct = function(options, callback) {
   self.pushAsset('script', 'editor', { when: 'user' });
   self.pushAsset('template', 'manage', { when: 'user', data: { fields: self._schema } });
 
-  self._apos.addLocal('aposPreferencesMenu', function(options) {
-    // Pass the options as one argument so they can be passed on
-    return self.render(__dirname + '/views/preferencesMenu', { args: options });
+  self._apos.addLocal('aposPreferencesMenu', function(permissions) {
+    if (!permissions.admin) {
+      // Oh heck no
+      return '';
+    }
+    return self.render(__dirname + '/views/preferencesMenu', {});
   });
 
   self._apos.pushGlobalData({
@@ -47,7 +52,8 @@ aposPreferences.Construct = function(options, callback) {
   // =================================================================
 
   self._app.get('/apos-preferences', function(req, res) {
-    if(!req.user) {
+    console.log(req.user.permissions);
+    if((!req.user) || (!req.user.permissions.admin)) {
       res.statusCode = 403;
       return res.send();
     }
@@ -62,6 +68,10 @@ aposPreferences.Construct = function(options, callback) {
 
 
   self._app.post('/apos-preferences', function(req, res) {
+    if((!req.user) || (!req.user.permissions.admin)) {
+      res.statusCode = 403;
+      return res.send();
+    }
     var values = {};
     return self._schemas.convertFields(req, self._schema, 'form', req.body, values, function(err) {
       if (err) {
@@ -93,7 +103,7 @@ aposPreferences.Construct = function(options, callback) {
     } else {
       return callback(null);
     }
-  }
+  };
 
   // Must wait at least until next tick to invoke callback!
   if (callback) {

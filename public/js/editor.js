@@ -43,7 +43,7 @@ function AposPreferences() {
         url: '/apos-preferences',
         data: data,
         success: function() {
-          apos.change('preferences');
+          window.location.reload(true);
         },
         error: function() {
           apos.notification('There was an error communicating with the server.', { type: 'error' });

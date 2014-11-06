@@ -25,4 +25,10 @@ In `outerLayout.html` where your Apostrophe site-wide menu is defined:
 {{ aposPreferencesMenu(permissions) }}
 ```
 
-In tempaltes, your site preferences are now available in the `preferences` variable.
+In templates, your site preferences are now available in the `preferences` variable.
+
+## Changelog
+
+In version 0.5.14, important security provisions were added. You must pass the `permissions` object as was always documented above. If, as found in some of our older projects, you were previously passing `edit: true`, you will need to fix that as we are now checking permissions properly.
+
+Starting with version 0.5.14 we also refresh the page fully after preferences are saved. Since the preferences are global they tend to impact elements in the outer layout. Since they are edited rarely there is no real penalty for refreshing the page.
