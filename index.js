@@ -52,7 +52,6 @@ aposPreferences.Construct = function(options, callback) {
   // =================================================================
 
   self._app.get('/apos-preferences', function(req, res) {
-    console.log(req.user.permissions);
     if((!req.user) || (!req.user.permissions.admin)) {
       res.statusCode = 403;
       return res.send();
