@@ -15,11 +15,11 @@ function AposPreferences() {
 
         $.getJSON('/apos-preferences', function(data) {
           aposSchemas.populateFields($el, self.schema, data, function(){
-
             // set the save button listener
             $el.find('[data-save]').on('click', function() {
               $(this).addClass('apos-busy');
               savePreferences($el);
+              return false;
             });
 
             return callback();
