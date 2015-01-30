@@ -90,18 +90,19 @@ aposPreferences.Construct = function(options, callback) {
     });
   });
 
-  // Put the preferences in req.extras
+  // Put the preferences in req.extras. If req.extras does not exist
+  // it is created. This way the method can be called directly when
+  // you're not generating an A2 page response, for instance from
+  // an AJAX action.
+
   self.loader = function(req, callback) {
-    if (req && req.extras) {
-      self._preferences.find().toArray( function(err, results) {
-        if (results.length) {
-          req.extras.preferences = _.omit(results[0], '_id');
-        }
-        return callback(null);
-      });
-    } else {
+    req.extras = req.extras || {};
+    self._preferences.find().toArray( function(err, results) {
+      if (results.length) {
+        req.extras.preferences = _.omit(results[0], '_id');
+      }
       return callback(null);
-    }
+    });
   };
 
   // Must wait at least until next tick to invoke callback!
