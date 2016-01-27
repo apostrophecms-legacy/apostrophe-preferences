@@ -98,6 +98,7 @@ aposPreferences.Construct = function(options, callback) {
   self.loader = function(req, callback) {
     req.extras = req.extras || {};
     self._preferences.find().toArray( function(err, results) {
+      req.extras.preferences = {};
       if (results.length) {
         req.extras.preferences = _.omit(results[0], '_id');
       }
