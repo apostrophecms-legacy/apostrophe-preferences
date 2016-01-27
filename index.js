@@ -60,7 +60,7 @@ aposPreferences.Construct = function(options, callback) {
       if (results.length) {
         return res.json( _.omit(results[0], '_id') );
       } else {
-        return res.send({ staus: 'ok', errors: 'No Preferences Results' });
+        return res.send({ status: 'ok', errors: 'No Preferences Results' });
       }
     });
   });
@@ -74,14 +74,14 @@ aposPreferences.Construct = function(options, callback) {
     var values = {};
     return self._schemas.convertFields(req, self._schema, 'form', req.body, values, function(err) {
       if (err) {
-        return res.send({ staus: 'Error', errors: err });
+        return res.send({ status: 'Error', errors: err });
       } else {
 
         self._preferences.find().toArray( function(err, results) {
           var newPrefs = _.merge((results.length ? results[0] : {}), values );
           self._preferences.save(newPrefs, function(err) {
             return res.send({
-              staus: err ? 'Error' : 'ok',
+              status: err ? 'Error' : 'ok',
               errors: err
             });
           });
