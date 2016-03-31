@@ -124,7 +124,7 @@ aposPreferences.Construct = function(options, callback) {
         if (err) {
           res.statusCode = 500;
           req.template = 'serverError';
-          return res.send(self.renderPage(req, 'pages/serverError.html', {}, 'always'));
+          return res.send(options.pages.renderPage(req, options.apos.options.rootDir + '/views/pages/serverError', {}, 'anon'));
         }
         return next();
       });
