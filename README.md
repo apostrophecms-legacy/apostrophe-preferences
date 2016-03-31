@@ -27,13 +27,12 @@ In `outerLayout.html` where your Apostrophe site-wide menu is defined:
 
 In templates, your site preferences are now available in the `preferences` variable.
 
-## Loading preferences when you're not rendering a page
+## Loading preferences where middleware doesn't run
 
-On regular Apostrophe pages, you can always see the preferences in `req.extras.preferences`. However it is also sometimes useful to have access to the preferences in an AJAX route, or another situation where page loaders are not called, such as in a task.
-
-To do that, just call the loader yourself:
+This module now loads its content via middleware, so it's likely you'll always have the data in `req.extras.preferences`. However if you're writing a command line task, you might want to call the loader yourself:
 
 ```javascript
+var req = apos.getTaskReq();
 return site.modules['apostrophe-preferences'].loader(req, function(err) {
   // req.extras.preferences is available here
 });
@@ -43,6 +42,10 @@ If `req.extras` is not already defined it will be created for you.
 
 
 ## Changelog
+
+In version 0.5.19, the loader began running as middleware. For bc reasons, the `self.loader` method is called from the middleware, and has a new provision to gracefully ignore double invocation.
+
+In versions 0.5.17-0.5.18, provision was made to guarantee `req.extras.preferences` exists as an empty object even if there is no data yet.
 
 In version 0.5.16, it became possible to call the loader easily yourself in situations where page loaders are not ordinarily called.
 

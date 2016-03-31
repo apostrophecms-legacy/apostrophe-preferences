@@ -94,17 +94,42 @@ aposPreferences.Construct = function(options, callback) {
   // it is created. This way the method can be called directly when
   // you're not generating an A2 page response, for instance from
   // an AJAX action.
+  //
+  // For bc reasons this method must be called self.loader, which makes
+  // it a page loader. But we now also invoke it from middleware, to make
+  // the data available in contexts like the notfound template. So there is
+  // a built-in guard against loading twice.
 
   self.loader = function(req, callback) {
+    if (req._aposPreferencesLoaded) {
+      return setImmediate(callback);
+    }
     req.extras = req.extras || {};
     self._preferences.find().toArray( function(err, results) {
+      req._aposPreferencesLoaded = true;
       req.extras.preferences = {};
+      if (err) {
+        return callback(err);
+      }
       if (results.length) {
         req.extras.preferences = _.omit(results[0], '_id');
       }
       return callback(null);
     });
   };
+
+  self.middleware = [
+    function(req, res, next) {
+      return self.loader(req, function(err) {
+        if (err) {
+          res.statusCode = 500;
+          req.template = 'serverError';
+          return res.send(self.renderPage(req, 'pages/serverError.html', {}, 'always'));
+        }
+        return next();
+      });
+    }
+  ];
 
   // Must wait at least until next tick to invoke callback!
   if (callback) {
