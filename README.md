@@ -43,6 +43,8 @@ If `req.extras` is not already defined it will be created for you.
 
 ## Changelog
 
+In version 0.5.20, a bug was fixed causing a crash if the `permissions` object does not exist in outerLayout.
+
 In version 0.5.19, the loader began running as middleware. For bc reasons, the `self.loader` method is called from the middleware, and has a new provision to gracefully ignore double invocation.
 
 In versions 0.5.17-0.5.18, provision was made to guarantee `req.extras.preferences` exists as an empty object even if there is no data yet.
@@ -52,3 +54,4 @@ In version 0.5.16, it became possible to call the loader easily yourself in situ
 In version 0.5.14, important security provisions were added. You must pass the `permissions` object as was always documented above. If, as found in some of our older projects, you were previously passing `edit: true`, you will need to fix that as we are now checking permissions properly.
 
 Starting with version 0.5.14 we also refresh the page fully after preferences are saved. Since the preferences are global they tend to impact elements in the outer layout. Since they are edited rarely there is no real penalty for refreshing the page.
+
