@@ -32,7 +32,7 @@ aposPreferences.Construct = function(options, callback) {
   self.pushAsset('template', 'manage', { when: 'user', data: { fields: self._schema } });
 
   self._apos.addLocal('aposPreferencesMenu', function(permissions) {
-    if (!permissions.admin) {
+    if (!(permissions && permissions.admin)) {
       // Oh heck no
       return '';
     }
