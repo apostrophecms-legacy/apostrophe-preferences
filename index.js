@@ -1,7 +1,7 @@
 /* jshint node:true */
 
 var _ = require('lodash');
-
+var async = require('async');
 module.exports = aposPreferences;
 
 function aposPreferences(options, callback) {
@@ -79,6 +79,14 @@ aposPreferences.Construct = function(options, callback) {
 
         self._preferences.find().toArray( function(err, results) {
           var newPrefs = _.merge((results.length ? results[0] : {}), values );
+          // Discard _ properties that should never persist, however preserve _id
+          // separately because clonePermanent expects JSON-safe data and
+          // _id is not
+          var _id = newPrefs._id;
+          newPrefs = self._apos.clonePermanent(newPrefs);
+          if (_id) {
+            newPrefs._id = _id;
+          }
           self._preferences.save(newPrefs, function(err) {
             return res.send({
               status: err ? 'Error' : 'ok',
@@ -105,17 +113,30 @@ aposPreferences.Construct = function(options, callback) {
       return setImmediate(callback);
     }
     req.extras = req.extras || {};
-    self._preferences.find().toArray( function(err, results) {
-      req._aposPreferencesLoaded = true;
-      req.extras.preferences = {};
-      if (err) {
-        return callback(err);
-      }
-      if (results.length) {
-        req.extras.preferences = _.omit(results[0], '_id');
-      }
-      return callback(null);
-    });
+    return async.series([
+      find,
+      areas,
+      joins
+    ], callback);
+    function find(callback) {
+      return self._preferences.find().toArray( function(err, results) {
+        req._aposPreferencesLoaded = true;
+        req.extras.preferences = {};
+        if (err) {
+          return callback(err);
+        }
+        if (results.length) {
+          req.extras.preferences = _.omit(results[0], '_id');
+        }
+        return callback(null);
+      });
+    }
+    function areas(callback) {
+      return self._apos.callLoadersForPage(req, req.extras.preferences, callback);
+    }
+    function joins(callback) {
+      return self._schemas.join(req, self._schema, req.extras.preferences, true, callback);
+    }
   };
 
   self.middleware = [
