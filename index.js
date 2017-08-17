@@ -126,7 +126,7 @@ aposPreferences.Construct = function(options, callback) {
           return callback(err);
         }
         if (results.length) {
-          req.extras.preferences = _.omit(results[0], '_id');
+          req.extras.preferences = self._apos.clonePermanent(_.omit(results[0], '_id'));
         }
         return callback(null);
       });

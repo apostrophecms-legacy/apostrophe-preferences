@@ -1,6 +1,6 @@
 {
   "name": "apostrophe-preferences",
-  "version": "0.5.21",
+  "version": "0.5.22",
   "description": "A site-wide preferences menu with a custom schema.",
   "main": "index.js",
   "scripts": {

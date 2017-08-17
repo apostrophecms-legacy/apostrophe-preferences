@@ -45,6 +45,8 @@ If `req.extras` is not already defined it will be created for you.
 
 ## Changelog
 
+In version 0.5.22, existing data from the database is also trimmed of stale dynamic properties so it doesn't cause crashes when loading new ones.
+
 In version 0.5.21, area/widget loaders and joins are executed properly, and stale related objects are not stored in the preferences collection. For existing preferences, hit save once to get the benefit of this fix.
 
 In version 0.5.20, a bug was fixed causing a crash if the `permissions` object does not exist in outerLayout.
