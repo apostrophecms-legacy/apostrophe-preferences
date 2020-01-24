@@ -78,7 +78,9 @@ aposPreferences.Construct = function(options, callback) {
       } else {
 
         self._preferences.find().toArray( function(err, results) {
-          var newPrefs = _.merge((results.length ? results[0] : {}), values );
+          var newPrefs = _.merge((results.length ? {
+            _id: results[0]._id
+          } : {}), values );
           // Discard _ properties that should never persist, however preserve _id
           // separately because clonePermanent expects JSON-safe data and
           // _id is not
