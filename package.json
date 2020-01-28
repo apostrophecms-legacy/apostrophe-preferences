@@ -1,6 +1,6 @@
 {
   "name": "apostrophe-preferences",
-  "version": "0.5.22",
+  "version": "0.5.23",
   "description": "A site-wide preferences menu with a custom schema.",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/punkave/apostrophe-preferences"
+    "url": "https://github.com/apostrophecms-legacy/apostrophe-preferences"
   },
   "author": "P'unk Avenue",
   "license": "BSD",
@@ -17,9 +17,9 @@
     "lodash": "2.4.1"
   },
   "bugs": {
-    "url": "https://github.com/punkave/apostrophe-preferences/issues"
+    "url": "https://github.com/apostrophecms-legacy/apostrophe-preferences/issues"
   },
-  "homepage": "https://github.com/punkave/apostrophe-preferences",
+  "homepage": "https://github.com/apostrophecms-legacy/apostrophe-preferences",
   "keywords": [
     "apostrophe",
     "global",
