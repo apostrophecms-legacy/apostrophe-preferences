@@ -1,3 +1,7 @@
+# ⛔️ **DEPRECATED** — do not use for new projects
+
+See [our current docs](https://docs.apostrophecms.org/)
+
 ### Apostrophe Preferences
 
 ## THIS MODULE IS DEPRECATED FOR NEW PROJECTS. [Apostrophe 2.x](http://apostrophecms.org) has a global preferences object built in. You do not need this module.
